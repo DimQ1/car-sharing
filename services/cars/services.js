@@ -5,8 +5,8 @@ class CarService {
         return cars.create(car);
     }
 
-    update(car) {
-        return cars.update(car);
+    update(car, id) {
+        return cars.update(car, id);
     }
 
     getAll() {
@@ -14,7 +14,7 @@ class CarService {
     }
 
     getById(id) {
-        return cars.findById(id);
+        return cars.getById(id);
     }
 
     deleteById(id) {

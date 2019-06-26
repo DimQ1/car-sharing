@@ -14,7 +14,7 @@ const { port } = require('./config');
 const app = express();
 
 const mongoDB = 'mongodb://localhost/car-sharing';
-mongoose.connect(mongoDB, { useNewUrlParser: true, useCreateIndex: true });
+mongoose.connect(mongoDB, { useNewUrlParser: true, useCreateIndex: true, useFindAndModify: false });
 
 app.use(helmet());
 app.use(bodyParser.json());

@@ -8,8 +8,8 @@ class CarRepository {
         return newCar;
     }
 
-    async update(car) {
-        const updatedCar = await cruid.update(Car, car.id, car);
+    async update(car, id) {
+        const updatedCar = await cruid.update(Car, id, car);
 
         return updatedCar;
     }
@@ -20,8 +20,8 @@ class CarRepository {
         return cars;
     }
 
-    async getByid(id) {
-        const car = await cruid.getByid(Car, id);
+    async getById(id) {
+        const car = await cruid.getById(Car, id);
 
         return car;
     }

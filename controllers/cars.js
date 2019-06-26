@@ -3,23 +3,23 @@ const { services } = require('../services/cars');
 class CarsController {
     async create(req, res, next) {
         try {
-            res.json(await services.create(req.body.card));
+            res.json(await services.create(req.body));
         } catch (error) {
             next(error);
         }
     }
 
-    getAll(req, res, next) {
+    async getAll(req, res, next) {
         try {
-            res.json(services.getAll());
+            res.json(await services.getAll());
         } catch (error) {
             next(error);
         }
     }
 
-    findById(req, res, next) {
+    async getById(req, res, next) {
         try {
-            res.json(services.findById(req.params.cardId));
+            res.json(await services.getById(req.params.carId));
         } catch (error) {
             next(error);
         }
@@ -27,7 +27,7 @@ class CarsController {
 
     async update(req, res, next) {
         try {
-            res.json({ updated: await services.Update(req.body.card) });
+            res.json({ updated: await services.update(req.body, req.params.carId) });
         } catch (error) {
             next(error);
         }
@@ -35,7 +35,7 @@ class CarsController {
 
     async deleteById(req, res, next) {
         try {
-            res.json({ deleted: await services.deleteById(req.params.cardId) });
+            res.json({ deleted: await services.deleteById(req.params.carId) });
         } catch (error) {
             next(error);
         }

@@ -52,8 +52,22 @@ const HistoryRunSchema = new Schema();
 HistoryRunSchema.add(CurrentRunSchema)
     .add({
         finishFuelLevel: Number,
-        FinishMilage: Number
+        finishMilage: Number
     });
+
+const pointShema = new Schema({
+    type: {
+        type: String,
+        enum: ['Point'],
+        required: true
+    },
+    coordinates:
+    {
+        type: [Number],
+        require: true
+    }
+});
+
 
 const carSchema = new Schema({
     VIN: {
@@ -66,7 +80,9 @@ const carSchema = new Schema({
     fuelLevel: Number,
     mileage: Number,
     curentRun: CurrentRunSchema,
-    location: String,
+    location: {
+        type: pointShema
+    },
     BookingsHistory: [HistoryRunSchema]
 });
 

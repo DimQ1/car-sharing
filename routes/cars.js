@@ -7,9 +7,9 @@ const { role } = require('../middlewares/authorize');
 const { authorize } = require('../middlewares/authorize');
 const { carsController } = require('../controllers/index');
 
-router.post('/', authorize(role.admin), expressJoiValidator(validators.create), carsController.create);
+router.post('/', authorize(role.admin), carsController.create);
 router.get('/', carsController.getAll);
-router.get('/:carId', carsController.findById);
-router.put('/:carId', authorize(role.admin), expressJoiValidator(validators.update), carsController.update);
+router.get('/:carId', carsController.getById);
+router.put('/:carId', authorize(role.admin), carsController.update);
 router.delete('/:carId', authorize(role.admin), carsController.deleteById);
 module.exports = router;
