@@ -42,7 +42,7 @@ class CruidRepository {
         });
     }
 
-    getByName(Model, name, limit) {
+    find(Model, name, limit) {
         return new Promise((resolve, reject) => {
             Model.find(name)
                 .limit(parseInt(limit, 10))
