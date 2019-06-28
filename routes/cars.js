@@ -1,8 +1,6 @@
 const { Router } = require('express');
 
 const router = Router();
-const expressJoiValidator = require('express-joi-validator');
-const { validators } = require('../services/cars');
 const { role } = require('../middlewares/authorize');
 const { authorize } = require('../middlewares/authorize');
 const { carsController } = require('../controllers/index');

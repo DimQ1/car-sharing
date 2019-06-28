@@ -15,9 +15,9 @@ class UserRepository {
     }
 
     async getByName(name) {
-        const user = await cruid.find(User, { userName: name });
+        const user = await cruid.findOne(User, { userName: name });
 
-        return user[0];
+        return user;
     }
 
     getById(id) {

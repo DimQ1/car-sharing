@@ -6,8 +6,10 @@ const users = require('../../dataAccess/users');
 class Authenticate {
     constructor() {
         this._getUserWithoutPassword = (user) => {
-            // eslint-disable-next-line no-unused-vars
-            const { password, ...userWithoutPassword } = user;
+            const {
+                // eslint-disable-next-line no-unused-vars
+                password, _id, __v, ...userWithoutPassword
+            } = user.toObject({ virtuals: true });
 
             return userWithoutPassword;
         };

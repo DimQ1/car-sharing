@@ -3,7 +3,8 @@ const { services } = require('../services/cars');
 class CarsController {
     async create(req, res, next) {
         try {
-            res.json(await services.create(req.body));
+            res.status(201)
+                .json(await services.create(req.body));
         } catch (error) {
             next(error);
         }
@@ -35,7 +36,9 @@ class CarsController {
 
     async deleteById(req, res, next) {
         try {
-            res.json({ deleted: await services.deleteById(req.params.carId) });
+            await services.deleteById(req.params.carId);
+            res.status(204)
+                .send();
         } catch (error) {
             next(error);
         }

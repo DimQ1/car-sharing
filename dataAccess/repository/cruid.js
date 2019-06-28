@@ -42,9 +42,9 @@ class CruidRepository {
         });
     }
 
-    find(Model, name, limit) {
+    findOne(Model, name, limit) {
         return new Promise((resolve, reject) => {
-            Model.find(name)
+            Model.findOne(name)
                 .limit(parseInt(limit, 10))
                 .exec((err, data) => {
                     if (err) reject(err);
@@ -56,9 +56,9 @@ class CruidRepository {
     deleteById(Model, id) {
         return new Promise((resolve, reject) => {
             Model.findByIdAndRemove(id)
-                .exec((err, data) => {
+                .exec((err) => {
                     if (err) reject(err);
-                    resolve(data);
+                    resolve(true);
                 });
         });
     }
