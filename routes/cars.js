@@ -8,7 +8,7 @@ const errorCatcher = require('../common/errorCatcher');
 
 router.post('/', authorize(role.Admin), errorCatcher(carsController.create));
 router.get('/', errorCatcher(carsController.getAll));
-router.get('/fuellowLevel', errorCatcher(carsController.foundFuelLevelLess.bind(carsController)));
+router.get('/fuellowLevel', errorCatcher((req, res) => carsController.foundFuelLevelLess(req, res)));
 router.get('/:carId', errorCatcher(carsController.getById));
 router.put('/:carId', authorize(role.Admin), errorCatcher(carsController.update));
 router.delete('/:carId', authorize(role.Admin), errorCatcher(carsController.deleteById));
