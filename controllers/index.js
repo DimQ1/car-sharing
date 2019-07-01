@@ -1,6 +1,6 @@
-const users = require('./users');
-const login = require('./login');
-const cars = require('./cars');
+const users = require('./usersController');
+const login = require('./loginController');
+const cars = require('./carController');
 
 module.exports = {
     usersController: users,

@@ -4,10 +4,13 @@ const router = Router();
 const { role } = require('../middlewares/authorize');
 const { authorize } = require('../middlewares/authorize');
 const { carsController } = require('../controllers/index');
+const errorCatcher = require('../common/errorCatcher');
 
-router.post('/', authorize(role.admin), carsController.create);
-router.get('/', carsController.getAll);
-router.get('/:carId', carsController.getById);
-router.put('/:carId', authorize(role.admin), carsController.update);
-router.delete('/:carId', authorize(role.admin), carsController.deleteById);
+router.post('/', authorize(role.Admin), errorCatcher(carsController.create));
+router.get('/', errorCatcher(carsController.getAll));
+router.get('/fuellowLevel', errorCatcher(carsController.foundFuelLevelLess.bind(carsController)));
+router.get('/:carId', errorCatcher(carsController.getById));
+router.put('/:carId', authorize(role.Admin), errorCatcher(carsController.update));
+router.delete('/:carId', authorize(role.Admin), errorCatcher(carsController.deleteById));
+
 module.exports = router;

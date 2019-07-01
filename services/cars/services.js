@@ -9,12 +9,18 @@ class CarService {
         return cars.update(car, id);
     }
 
-    getAll() {
-        return cars.getAll();
+    getAll(query) {
+        return cars.getAll(query);
     }
 
-    getById(id) {
-        return cars.getById(id);
+    findFuelLevelLess(level) {
+        const query = { fuelLevel: { $lte: parseInt(level, 10) } };
+
+        return cars.getAll(query);
+    }
+
+    findById(id) {
+        return cars.findById(id);
     }
 
     deleteById(id) {

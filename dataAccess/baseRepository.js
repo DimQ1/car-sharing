@@ -1,7 +1,13 @@
-class CruidRepository {
-    create(Model) {
+class BaseRepository {
+    constructor(model) {
+        this.Model = model;
+    }
+
+    create(newModel) {
+        const model = new this.Model(newModel);
+
         return new Promise((resolve, reject) => {
-            Model.save((err, data) => {
+            model.save((err, data) => {
                 if (err) {
                     reject(err);
                 }
@@ -10,9 +16,9 @@ class CruidRepository {
         });
     }
 
-    update(Model, id, updateModel) {
+    update(id, updateModel) {
         return new Promise((resolve, reject) => {
-            Model.findByIdAndUpdate(id, updateModel)
+            this.Model.findByIdAndUpdate(id, updateModel)
                 .exec((err, data) => {
                     if (err) reject(err);
                     resolve(data);
@@ -20,9 +26,23 @@ class CruidRepository {
         });
     }
 
-    getAll(Model, limit) {
+    getAll(query) {
+        const { limit, offset, ...findQuery } = query || { limit: null, offset: null };
+
         return new Promise((resolve, reject) => {
-            Model.find({})
+            this.Model.find(findQuery)
+                .limit(parseInt(limit, 10))
+                .skip(parseInt(offset, 10))
+                .exec((err, data) => {
+                    if (err) reject(err);
+                    resolve(data);
+                });
+        });
+    }
+
+    findById(id, limit) {
+        return new Promise((resolve, reject) => {
+            this.Model.findById(id)
                 .limit(parseInt(limit, 10))
                 .exec((err, data) => {
                     if (err) reject(err);
@@ -31,9 +51,9 @@ class CruidRepository {
         });
     }
 
-    getById(Model, id, limit) {
+    findOne(name, limit) {
         return new Promise((resolve, reject) => {
-            Model.findById(id)
+            this.Model.findOne(name)
                 .limit(parseInt(limit, 10))
                 .exec((err, data) => {
                     if (err) reject(err);
@@ -42,20 +62,9 @@ class CruidRepository {
         });
     }
 
-    findOne(Model, name, limit) {
+    deleteById(id) {
         return new Promise((resolve, reject) => {
-            Model.findOne(name)
-                .limit(parseInt(limit, 10))
-                .exec((err, data) => {
-                    if (err) reject(err);
-                    resolve(data);
-                });
-        });
-    }
-
-    deleteById(Model, id) {
-        return new Promise((resolve, reject) => {
-            Model.findByIdAndRemove(id)
+            this.Model.findByIdAndRemove(id)
                 .exec((err) => {
                     if (err) reject(err);
                     resolve(true);
@@ -64,4 +73,4 @@ class CruidRepository {
     }
 }
 
-module.exports = new CruidRepository();
+module.exports = BaseRepository;

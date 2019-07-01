@@ -20,7 +20,7 @@ class UserService {
     }
 
     getById(id) {
-        return this._getUserWithoutPassword(users.getById(id));
+        return this._getUserWithoutPassword(users.findById(id));
     }
 
     create(user) {

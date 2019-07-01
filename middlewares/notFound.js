@@ -1,7 +1,7 @@
-module.exports = (request, response, next) => {
-    response.status(404)
+module.exports = (req, res, next) => {
+    res.status(404)
         .json({
-            url: request.url,
+            url: req.url,
             message: 'Sorry cant find that!',
             error: '404'
         });

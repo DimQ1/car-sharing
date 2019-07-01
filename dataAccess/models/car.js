@@ -70,6 +70,7 @@ const pointShema = new Schema({
 
 
 const carSchema = new Schema({
+    id: Number,
     VIN: {
         type: Number,
         required: [true, 'Vehicle identification number required']
