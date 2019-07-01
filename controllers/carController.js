@@ -14,8 +14,12 @@ class CarController {
         res.json(await carServices.getAll(req.query));
     }
 
-    async foundFuelLevelLess(req, res) {
+    async findFuelLevelLess(req, res) {
         res.json(await carServices.findFuelLevelLess(this.fuellowLevel));
+    }
+
+    async findUnautorazedCard(req, res) {
+        res.json(await carServices.findUnautarazedCard());
     }
 
     async getById(req, res) {

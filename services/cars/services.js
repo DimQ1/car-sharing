@@ -19,6 +19,22 @@ class CarService {
         return cars.getAll(query);
     }
 
+    async findUnautarazedCard() {
+        const query = {
+            'curentRun.driver.card': { $exists: false },
+            'status.name': 'Reserved'
+        };
+        const allCars = await cars.getAll(query);
+        const reservedCars = allCars
+            .map(car => ({
+                VIN: car.VIN,
+                driver: car.curentRun.driver,
+                location: car.location
+            }));
+
+        return reservedCars;
+    }
+
     findById(id) {
         return cars.findById(id);
     }
