@@ -6,12 +6,15 @@ class CarController {
     }
 
     async create(req, res) {
+        const car = req.body;
         res.status(201)
-            .json(await carServices.create(req.body));
+            .json(await carServices.create(car));
     }
 
     async getAll(req, res) {
-        res.json(await carServices.getAll(req.query));
+        const { query } = req;
+
+        res.json(await carServices.getAll(query));
     }
 
     async findFuelLevelLess(req, res) {
@@ -23,25 +26,36 @@ class CarController {
     }
 
     async getById(req, res) {
-        res.json(await carServices.findById(req.params.carId));
+        const { carId } = req.params;
+
+        res.json(await carServices.findById(carId));
     }
 
     async updateById(req, res) {
-        res.json({ updated: await carServices.updateById(req.params.carId, req.body) });
+        const { carId } = req.params;
+        const updateCarModel = req.body;
+
+        res.json({ updated: await carServices.updateById(carId, updateCarModel) });
     }
 
     async patch(req, res) {
-        res.json({ updated: await carServices.patch(req.query, req.body) });
+        const { query } = req.query;
+        const updateCarModel = req.body;
+
+        res.json({ updated: await carServices.patch(query, updateCarModel) });
     }
 
     async deleteById(req, res) {
-        await carServices.deleteById(req.params.carId);
+        const { carId } = req.params;
+        await carServices.deleteById(carId);
         res.status(204)
             .send();
     }
 
     async deleteBy(req, res) {
-        await carServices.deleteBy(req.query);
+        const { query } = req.query;
+
+        await carServices.deleteBy(query);
         res.status(204)
             .send();
     }
