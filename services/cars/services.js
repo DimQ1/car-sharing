@@ -46,7 +46,7 @@ class CarService {
     deleteById(id) {
         return cars.deleteById(id);
     }
-    
+
     deleteBy(query) {
         return cars.deleteBy(query);
     }

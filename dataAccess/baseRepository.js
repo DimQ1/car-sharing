@@ -1,6 +1,12 @@
+const queryConverter = require('./queryConverter');
+
 class BaseRepository {
     constructor(model) {
         this.Model = model;
+    }
+
+    _convertQuery(query) {
+        return queryConverter.toMongoQuery(query);
     }
 
     create(newModel) {
@@ -40,7 +46,9 @@ class BaseRepository {
         const { limit, offset, ...findQuery } = query || { limit: null, offset: null };
 
         return new Promise((resolve, reject) => {
-            this.Model.find(findQuery)
+            const mongoQuery = this._convertQuery(findQuery);
+
+            this.Model.find(mongoQuery)
                 .limit(parseInt(limit, 10))
                 .skip(parseInt(offset, 10))
                 .exec((err, data) => {
