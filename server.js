@@ -1,5 +1,4 @@
 const express = require('express');
-const mongoose = require('mongoose');
 const helmet = require('helmet');
 const bodyParser = require('body-parser');
 const jwt = require('express-jwt');
@@ -10,13 +9,12 @@ const routes = require('./routes');
 const notFoundMiddelware = require('./middlewares/notFound');
 const { secret } = require('./config');
 const { port } = require('./config');
+const source = require('./dataAccess/source');
 
 const app = express();
 const loggerFactory = new LoggerFactory(logger);
 
-const mongoDB = 'mongodb://localhost/car-sharing';
-mongoose.connect(mongoDB, { useNewUrlParser: true, useCreateIndex: true, useFindAndModify: false });
-
+source.connect();
 app.use(helmet());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
