@@ -11,10 +11,6 @@ const ProductionInfoSchema = new Schema({
     }
 });
 
-const StatusSchema = new Schema({
-    name: String
-});
-
 const DriverSchema = new Schema({
     licenseNumber: {
         type: Number,
@@ -77,7 +73,7 @@ const carSchema = new Schema({
     },
     registrationNumber: Number,
     productionInfo: ProductionInfoSchema,
-    status: [StatusSchema],
+    status: String,
     fuelLevel: Number,
     mileage: Number,
     curentRun: CurrentRunSchema,

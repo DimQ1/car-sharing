@@ -26,12 +26,22 @@ class CarController {
         res.json(await carServices.findById(req.params.carId));
     }
 
-    async update(req, res) {
-        res.json({ updated: await carServices.update(req.params.carId, req.body) });
+    async updateById(req, res) {
+        res.json({ updated: await carServices.updateById(req.params.carId, req.body) });
+    }
+
+    async patch(req, res) {
+        res.json({ updated: await carServices.patch(req.query, req.body) });
     }
 
     async deleteById(req, res) {
         await carServices.deleteById(req.params.carId);
+        res.status(204)
+            .send();
+    }
+
+    async deleteBy(req, res) {
+        await carServices.deleteBy(req.query);
         res.status(204)
             .send();
     }

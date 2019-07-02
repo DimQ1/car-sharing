@@ -11,7 +11,9 @@ router.get('/', errorCatcher(carsController.getAll));
 router.get('/fuellowLevel', errorCatcher((req, res) => carsController.findFuelLevelLess(req, res)));
 router.get('/unauthorizedDriverCard', errorCatcher((req, res) => carsController.findUnautorazedCard(req, res)));
 router.get('/:carId', errorCatcher(carsController.getById));
-router.put('/:carId', authorize(role.Admin), errorCatcher(carsController.update));
+router.patch('/', authorize(role.Admin), errorCatcher(carsController.patch));
+router.put('/:carId', authorize(role.Admin), errorCatcher(carsController.updateById));
 router.delete('/:carId', authorize(role.Admin), errorCatcher(carsController.deleteById));
+router.delete('/', authorize(role.Admin), errorCatcher(carsController.deleteBy));
 
 module.exports = router;

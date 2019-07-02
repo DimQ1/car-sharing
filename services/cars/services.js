@@ -5,8 +5,12 @@ class CarService {
         return cars.create(car);
     }
 
-    update(car, id) {
-        return cars.update(car, id);
+    updateById(id, car) {
+        return cars.updateById(id, car);
+    }
+
+    patch(query, car) {
+        return cars.updateBy(query, car);
     }
 
     getAll(query) {
@@ -41,6 +45,10 @@ class CarService {
 
     deleteById(id) {
         return cars.deleteById(id);
+    }
+    
+    deleteBy(query) {
+        return cars.deleteBy(query);
     }
 }
 

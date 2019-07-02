@@ -16,9 +16,19 @@ class BaseRepository {
         });
     }
 
-    update(id, updateModel) {
+    updateById(id, updateModel) {
         return new Promise((resolve, reject) => {
             this.Model.findByIdAndUpdate(id, updateModel)
+                .exec((err, data) => {
+                    if (err) reject(err);
+                    resolve(data);
+                });
+        });
+    }
+
+    updateBy(query, updateModel) {
+        return new Promise((resolve, reject) => {
+            this.Model.updateMany(query, updateModel)
                 .exec((err, data) => {
                     if (err) reject(err);
                     resolve(data);
@@ -65,6 +75,16 @@ class BaseRepository {
     deleteById(id) {
         return new Promise((resolve, reject) => {
             this.Model.findByIdAndRemove(id)
+                .exec((err) => {
+                    if (err) reject(err);
+                    resolve(true);
+                });
+        });
+    }
+
+    deleteBy(qurey) {
+        return new Promise((resolve, reject) => {
+            this.Model.deleteMany(qurey)
                 .exec((err) => {
                     if (err) reject(err);
                     resolve(true);
