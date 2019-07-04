@@ -15,8 +15,11 @@ class Authenticate {
         };
     }
 
-    async login({ userName, password }) {
-        const user = await users.findByName(userName);
+    async login({ login, password }) {
+        const user = await users.findByName(login);
+        if (!user) {
+            throw new Error(`login "${login}" is incorrect`);
+        }
         const isPasswordCorrect = bcrypt.compareSync(password, user ? user.password : '');
         if (isPasswordCorrect) {
             const token = jwt.sign({ sub: user.id, role: user.role }, secret);
@@ -25,7 +28,7 @@ class Authenticate {
             return { user: userWithoutPassword, token };
         }
 
-        return null;
+        throw new Error('incorrect password');
     }
 }
 

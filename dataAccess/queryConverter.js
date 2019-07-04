@@ -9,10 +9,28 @@ class QueryConverter {
             .forEach((parametrKey) => {
                 switch (parametrKey) {
                     case '<':
-                        mongoParametr.$lte = parametr[parametrKey];
+                        mongoParametr.$lt = parametr[parametrKey];
                         break;
                     case '>':
+                        mongoParametr.$gt = parametr[parametrKey];
+                        break;
+                    case '<=':
+                        mongoParametr.$lte = parametr[parametrKey];
+                        break;
+                    case '>=':
                         mongoParametr.$gte = parametr[parametrKey];
+                        break;
+                    case 'exists':
+                        mongoParametr.$exists = parametr[parametrKey];
+                        break;
+                    case '!':
+                        if (parametr[parametrKey] instanceof Array) {
+                            mongoParametr.$not = { $in: parametr[parametrKey] };
+                        }
+                        else {
+                            mongoParametr.$not = { $eq: parametr[parametrKey] };
+                        }
+
                         break;
                     default:
                         throw new Error(`${parametrKey} is unknown parameter`);

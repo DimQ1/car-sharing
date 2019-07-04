@@ -1,7 +1,8 @@
-const { services } = require('../services/authenticate');
+const { services } = require('../../services/authenticate');
 
 class LoginController {
     async login(req, res) {
+        
         const { user, token } = await services.login(req.body);
         if (user) {
             res.header('Authorization', `Bearer ${token}`);

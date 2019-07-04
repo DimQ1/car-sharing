@@ -1,11 +1,13 @@
-const users = require('./usersController');
-const login = require('./loginController');
+const { userController } = require('./userController');
+const { loginController } = require('./loginController');
+const { loginValidators } = require('./loginController');
 const { carController } = require('./carController');
 const { carValidators } = require('./carController');
 
 module.exports = {
-    usersController: users,
-    loginController: login,
+    userController,
+    loginController,
+    loginValidators,
     carController,
     carValidators
 };

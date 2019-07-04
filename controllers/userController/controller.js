@@ -1,13 +1,13 @@
-const { service } = require('../services/users');
+const { userService } = require('../../services/users');
 
 class UserController {
     async getAll(req, res) {
-        const users = await service.getAll();
+        const users = await userService.getAll();
         res.json(users);
     }
 
     async getById(req, res) {
-        const user = await service.getById(req.params.id);
+        const user = await userService.getById(req.params.id);
         if (user) {
             res.json(user);
         } else {

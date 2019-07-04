@@ -7,7 +7,7 @@ class UserRepository extends BaseRepository {
     }
 
     async findByName(name) {
-        const user = await super.findOne(User, { userName: name });
+        const user = await super.findOne({ login: name });
 
         return user;
     }

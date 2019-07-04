@@ -1,5 +1,5 @@
-const carController = require('./carController');
-const carValidators = require('./carValidators');
+const carController = require('./controller');
+const carValidators = require('./validators');
 
 module.exports = {
     carController,

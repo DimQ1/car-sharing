@@ -3,13 +3,13 @@ const { Router } = require('express');
 const router = Router();
 const { role } = require('../middlewares/authorize');
 const { authorize } = require('../middlewares/authorize');
-const { usersController } = require('../controllers/index');
+const { userController } = require('../controllers');
 const errorCatcher = require('../common/errorCatcher');
 
 router.get('/',
     errorCatcher(authorize(role.Admin)),
-    errorCatcher(usersController.getAll));
+    errorCatcher(userController.getAll));
 
 router.get('/:id',
-    errorCatcher(usersController.getById));
+    errorCatcher(userController.getById));
 module.exports = router;
