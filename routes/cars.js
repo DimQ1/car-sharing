@@ -1,41 +1,44 @@
 const { Router } = require('express');
 
 const router = Router();
+const expressJoiValidator = require('express-joi-validator');
 const { role } = require('../middlewares/authorize');
 const { authorize } = require('../middlewares/authorize');
-const { carsController } = require('../controllers/index');
+const { carController } = require('../controllers/index');
+const { carValidators } = require('../controllers/index');
 const errorCatcher = require('../common/errorCatcher');
 
 router.post('/',
+    expressJoiValidator(carValidators.newCar),
     authorize(role.Admin),
-    errorCatcher(carsController.create));
+    errorCatcher(carController.create));
 
 router.get('/',
-    errorCatcher(carsController.getAll));
+    errorCatcher(carController.getAll));
 
 router.get('/fuellowLevel',
-    errorCatcher((req, res) => carsController.findFuelLevelLess(req, res)));
+    errorCatcher((req, res) => carController.findFuelLevelLess(req, res)));
 
 router.get('/unauthorizedDriverCard',
-    errorCatcher((req, res) => carsController.findUnautorazedCard(req, res)));
+    errorCatcher((req, res) => carController.findUnautorazedCard(req, res)));
 
 router.get('/:carId',
-    errorCatcher(carsController.getById));
+    errorCatcher(carController.getById));
 
 router.patch('/',
     errorCatcher(authorize(role.Admin)),
-    errorCatcher(carsController.patch));
+    errorCatcher(carController.patch));
 
 router.put('/:carId',
     errorCatcher(authorize(role.Admin)),
-    errorCatcher(carsController.updateById));
+    errorCatcher(carController.updateById));
 
 router.delete('/:carId',
     errorCatcher(authorize(role.Admin)),
-    errorCatcher(carsController.deleteById));
+    errorCatcher(carController.deleteById));
 
 router.delete('/',
     errorCatcher(authorize(role.Admin)),
-    errorCatcher(carsController.deleteBy));
+    errorCatcher(carController.deleteBy));
 
 module.exports = router;
