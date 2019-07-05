@@ -20,7 +20,7 @@ class Authenticate {
         if (!user) {
             throw new Error(`login "${login}" is incorrect`);
         }
-        const isPasswordCorrect = bcrypt.compareSync(password, user ? user.password : '');
+        const isPasswordCorrect = await bcrypt.compare(password, user ? user.password : '');
         if (isPasswordCorrect) {
             const token = jwt.sign({ sub: user.id, role: user.role }, secret);
             const userWithoutPassword = this._getUserWithoutPassword(user);
