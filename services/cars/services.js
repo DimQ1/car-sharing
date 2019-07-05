@@ -69,7 +69,7 @@ class CarService {
     }
 
     async deleteBy(query) {
-        const deleResult = await cars.deleteBy(query);;
+        const deleResult = await cars.deleteBy(query);
 
         return deleResult;
     }
