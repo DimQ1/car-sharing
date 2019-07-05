@@ -1,26 +1,42 @@
 const cars = require('../../dataAccess/cars');
 
 class CarService {
-    create(car) {
-        return cars.create(car);
+    _allCarsModelToObject(carsModel) {
+        return carsModel.map(car => car.toObject({ virtuals: true }));
     }
 
-    updateById(id, car) {
-        return cars.updateById(id, car);
+    async create(car) {
+        const newCar = (await cars.create(car))
+            .toObject({ virtuals: true });
+
+        return newCar;
     }
 
-    patch(query, car) {
-        return cars.updateBy(query, car);
+    async updateById(id, car) {
+        const updateResult = (await cars.updateById(id, car))
+            .toObject({ virtuals: true });
+
+        return updateResult;
     }
 
-    getAll(query) {
-        return cars.getAll(query);
+    async patch(query, car) {
+        const updateResult = (await cars.updateBy(query, car))
+            .toObject({ virtuals: true });
+
+        return updateResult;
     }
 
-    findFuelLevelLess(level) {
+    async getAll(query) {
+        const allCarsObject = this._allCarsModelToObject(await cars.getAll(query));
+
+        return allCarsObject;
+    }
+
+    async findFuelLevelLess(level) {
         const query = { fuelLevel: { $lte: parseInt(level, 10) } };
+        const allCarsObject = this._allCarsModelToObject(await cars.getAll(query));
 
-        return cars.getAll(query);
+        return allCarsObject;
     }
 
     async findUnautarazedCard() {
@@ -39,16 +55,23 @@ class CarService {
         return reservedCars;
     }
 
-    findById(id) {
-        return cars.findById(id);
+    async findById(id) {
+        const car = (await cars.findById(id))
+            .toObject({ virtuals: true });
+
+        return car;
     }
 
-    deleteById(id) {
-        return cars.deleteById(id);
+    async deleteById(id) {
+        const deleResult = await cars.deleteById(id);
+
+        return deleResult;
     }
 
-    deleteBy(query) {
-        return cars.deleteBy(query);
+    async deleteBy(query) {
+        const deleResult = await cars.deleteBy(query);;
+
+        return deleResult;
     }
 }
 
