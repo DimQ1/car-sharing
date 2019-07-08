@@ -63,7 +63,7 @@ const newCar = {
         curentRun: Joi.object(curentRunSchema),
         location: Joi.object(locationSchema)
             .required(),
-        BookingsHistory: Joi.array()
+        bookingsHistory: Joi.array()
     }
 };
 

@@ -81,7 +81,7 @@ const carSchema = new Schema({
     location: {
         type: pointShema
     },
-    BookingsHistory: [HistoryRunSchema]
+    bookingsHistory: [HistoryRunSchema]
 });
 
 module.exports = mongoose.model('Car', carSchema);
