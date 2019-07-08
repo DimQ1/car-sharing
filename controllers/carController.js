@@ -24,8 +24,13 @@ class CarController {
 
     async getById(req, res) {
         const { carId } = req.params;
+        const car = await carServices.findById(carId);
+        if (car) {
+            return res.json(car);
+        }
 
-        res.json(await carServices.findById(carId));
+        return res.status(400)
+            .json({ message: 'Car not found!' });
     }
 
     async updateById(req, res) {
@@ -36,7 +41,7 @@ class CarController {
     }
 
     async patch(req, res) {
-        const { query } = req.query;
+        const { query } = req;
         const updateCarModel = req.body;
 
         res.json({ updated: await carServices.patch(query, updateCarModel) });
@@ -44,17 +49,16 @@ class CarController {
 
     async deleteById(req, res) {
         const { carId } = req.params;
-        await carServices.deleteById(carId);
+        const deleResult = await carServices.deleteById(carId);
         res.status(204)
-            .send();
+            .json(deleResult);
     }
 
-    async deleteBy(req, res) {
-        const { query } = req.query;
+    async deleteByVin(req, res) {
+        const { VIN } = req.params;
 
-        await carServices.deleteBy(query);
-        res.status(204)
-            .send();
+        const deleResult = await carServices.deleteByVin(VIN);
+        res.json(deleResult);
     }
 }
 

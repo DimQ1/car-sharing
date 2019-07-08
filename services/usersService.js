@@ -1,4 +1,5 @@
 const users = require('../dataAccess/usersRepository');
+const { NotFoundContentError: NotFoundError } = require('../common/types/errorTypes');
 
 class UserService {
     constructor() {
@@ -13,18 +14,26 @@ class UserService {
     }
 
     async getAll() {
-        const allUsers = await users.getAll();
+        const allUsers = await users.getAll({});
+        if (!allUsers) {
+            throw new Error('not found');
+        }
         const allUsersWithoutPasswords = allUsers.map(user => this._getUserWithoutPassword(user));
 
         return allUsersWithoutPasswords;
     }
 
-    getById(id) {
-        return this._getUserWithoutPassword(users.findById(id));
+    async getById(id) {
+        const user = await users.findById(id);
+        if (!user) {
+            return null;
+        }
+
+        return this._getUserWithoutPassword(user);
     }
 
-    create(user) {
-        return this._getUserWithoutPassword(users.create(user));
+    async create(user) {
+        return this._getUserWithoutPassword(await users.create(user));
     }
 }
 

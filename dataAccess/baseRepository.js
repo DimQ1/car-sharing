@@ -9,39 +9,24 @@ class BaseRepository {
         return queryConverter.toMongoQuery(query);
     }
 
-    create(newModel) {
+    async create(newModel) {
         const model = new this.Model(newModel);
+        const createResult = await model.save();
 
-        return new Promise((resolve, reject) => {
-            model.save((err, data) => {
-                if (err) {
-                    reject(err);
-                }
-                resolve(data);
-            });
-        });
+        return createResult;
     }
 
-    updateById(id, updateModel) {
-        return new Promise((resolve, reject) => {
-            this.Model.findByIdAndUpdate(id, updateModel)
-                .exec((err, data) => {
-                    if (err) reject(err);
-                    resolve(data);
-                });
-        });
+    async updateById(id, updateModel) {
+        const updateResult = await this.Model.findByIdAndUpdate(id, updateModel);
+
+        return updateResult;
     }
 
-    updateBy(query, updateModel) {
-        return new Promise((resolve, reject) => {
-            const mongoQuery = this._convertQuery(query);
+    async updateBy(query, updateModel) {
+        const mongoQuery = this._convertQuery(query);
+        const updateResult = await this.Model.updateMany(mongoQuery, updateModel);
 
-            this.Model.updateMany(mongoQuery, updateModel)
-                .exec((err, data) => {
-                    if (err) reject(err);
-                    resolve(data);
-                });
-        });
+        return updateResult;
     }
 
     async findByAgregateQuery(query) {
@@ -65,48 +50,31 @@ class BaseRepository {
         return cursorData;
     }
 
-    findById(id, limit) {
-        return new Promise((resolve, reject) => {
-            this.Model.findById(id)
-                .limit(parseInt(limit, 10))
-                .exec((err, data) => {
-                    if (err) reject(err);
-                    resolve(data);
-                });
-        });
+    async findById(id, limit) {
+        const findResult = await this.Model.findById(id)
+            .limit(parseInt(limit, 10));
+
+        return findResult;
     }
 
-    findOne(name, limit) {
-        return new Promise((resolve, reject) => {
-            this.Model.findOne(name)
-                .limit(parseInt(limit, 10))
-                .exec((err, data) => {
-                    if (err) reject(err);
-                    resolve(data);
-                });
-        });
+    async findOne(name, limit) {
+        const findResult = await this.Model.findOne(name)
+            .limit(parseInt(limit, 10));
+
+        return findResult;
     }
 
-    deleteById(id) {
-        return new Promise((resolve, reject) => {
-            this.Model.findByIdAndRemove(id)
-                .exec((err) => {
-                    if (err) reject(err);
-                    resolve(true);
-                });
-        });
+    async deleteById(id) {
+        const deleteResult = await this.Model.findByIdAndRemove(id);
+
+        return deleteResult;
     }
 
-    deleteBy(qurey) {
-        return new Promise((resolve, reject) => {
-            const mongoQuery = this._convertQuery(qurey);
+    async deleteBy(qurey) {
+        const mongoQuery = this._convertQuery(qurey);
+        const deleteResult = await this.Model.deleteMany(mongoQuery);
 
-            this.Model.deleteMany(mongoQuery)
-                .exec((err) => {
-                    if (err) reject(err);
-                    resolve(true);
-                });
-        });
+        return deleteResult;
     }
 }
 

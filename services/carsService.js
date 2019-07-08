@@ -13,15 +13,13 @@ class CarService {
     }
 
     async updateById(id, car) {
-        const updateResult = (await carsRepository.updateById(id, car))
-            .toObject({ virtuals: true });
+        const updateResult = (await carsRepository.updateById(id, car));
 
         return updateResult;
     }
 
     async patch(query, car) {
-        const updateResult = (await carsRepository.updateBy(query, car))
-            .toObject({ virtuals: true });
+        const updateResult = (await carsRepository.updateBy(query, car));
 
         return updateResult;
     }
@@ -55,10 +53,12 @@ class CarService {
     }
 
     async findById(id) {
-        const car = (await carsRepository.findById(id))
-            .toObject({ virtuals: true });
+        const car = (await carsRepository.findById(id));
+        if (car) {
+            return car.toObject({ virtuals: true });
+        }
 
-        return car;
+        return null;
     }
 
     async deleteById(id) {
@@ -67,7 +67,11 @@ class CarService {
         return deleResult;
     }
 
-    async deleteBy(query) {
+    async deleteByVin(VIN) {
+        const query = {
+            VIN
+        };
+
         const deleResult = await carsRepository.deleteBy(query);
 
         return deleResult;

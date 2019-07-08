@@ -1,4 +1,4 @@
-const { userService } = require('../services/usersService');
+const userService = require('../services/usersService');
 
 class UserController {
     async getAll(req, res) {
@@ -7,11 +7,12 @@ class UserController {
     }
 
     async getById(req, res) {
-        const user = await userService.getById(req.params.id);
+        const user = await userService.getById(req.params.userId);
         if (user) {
             res.json(user);
         } else {
-            res.sendStatus(404);
+            res.status(400)
+                .json({ message: 'User not found!' });
         }
     }
 }

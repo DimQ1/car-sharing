@@ -1,4 +1,4 @@
-const Joi = require('joi');
+const Joi = require('@hapi/joi');
 
 const productionInfoSchema = {
     brand: Joi.string()
@@ -67,6 +67,46 @@ const newCar = {
     }
 };
 
+const fuelLevel = {
+    params: {
+        level: Joi.number()
+            .required()
+    }
+};
+
+const updateStatus = {
+    query: {
+        'productionInfo.date': Joi.object()
+            .required(),
+        'mileage': Joi.object()
+            .required()
+    },
+    body: {
+        status: Joi.string()
+            .required()
+    }
+};
+
+const paramsCarId = {
+    params: {
+        carId: Joi.string()
+            .min(24)
+            .max(24)
+            .required()
+    }
+};
+
+const paramsVin = {
+    params: {
+        VIN: Joi.number()
+            .required()
+    }
+};
+
 module.exports = {
-    newCar
+    newCar,
+    fuelLevel,
+    updateStatus,
+    paramsCarId,
+    paramsVin
 };
