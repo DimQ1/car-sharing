@@ -1,12 +1,16 @@
 const { createLogger, format, transports } = require('winston');
 
-class configLogger {
-    static getlogger() {
+class ConfigLogger {
+    constructor(nodeEnv) {
+        this.nodeEnv = nodeEnv || process.env.NODE_ENV;
+    }
+
+    getlogger() {
         const logger = createLogger();
-        switch (process.env.NODE_ENV) {
+        switch (this.nodeEnv) {
             case 'prodaction':
                 logger.add(new transports.File({
-                    filename: 'combined.log',
+                    filename: 'logs/combined.log',
                     format: format.json()
                 }));
                 break;
@@ -31,4 +35,5 @@ class configLogger {
     }
 }
 
-module.exports = configLogger.getlogger();
+module.exports = nodeEnv => new ConfigLogger(nodeEnv)
+    .getlogger();
