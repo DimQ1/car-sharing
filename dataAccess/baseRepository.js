@@ -34,7 +34,9 @@ class BaseRepository {
 
     updateBy(query, updateModel) {
         return new Promise((resolve, reject) => {
-            this.Model.updateMany(query, updateModel)
+            const mongoQuery = this._convertQuery(query);
+
+            this.Model.updateMany(mongoQuery, updateModel)
                 .exec((err, data) => {
                     if (err) reject(err);
                     resolve(data);
@@ -42,20 +44,25 @@ class BaseRepository {
         });
     }
 
-    getAll(query) {
-        const { limit, offset, ...findQuery } = query || { limit: null, offset: null };
+    async findByAgregateQuery(query) {
+        const { limit, offset, ...findQuery } = query;
+        const mongoQuery = this._convertQuery(findQuery.query);
 
-        return new Promise((resolve, reject) => {
-            const mongoQuery = this._convertQuery(findQuery);
+        const cursorData = await this.Model.aggregate(mongoQuery)
+            .limit(parseInt(limit || 100, 10))
+            .skip(parseInt(offset || 0, 10));
 
-            this.Model.find(mongoQuery)
-                .limit(parseInt(limit, 10))
-                .skip(parseInt(offset, 10))
-                .exec((err, data) => {
-                    if (err) reject(err);
-                    resolve(data);
-                });
-        });
+        return cursorData;
+    }
+
+    async getAll(query) {
+        const { limit, offset, ...findQuery } = query;
+        const mongoQuery = this._convertQuery(findQuery);
+        const cursorData = await this.Model.find(mongoQuery)
+            .limit(parseInt(limit, 10))
+            .skip(parseInt(offset, 10));
+
+        return cursorData;
     }
 
     findById(id, limit) {
@@ -92,7 +99,9 @@ class BaseRepository {
 
     deleteBy(qurey) {
         return new Promise((resolve, reject) => {
-            this.Model.deleteMany(qurey)
+            const mongoQuery = this._convertQuery(qurey);
+
+            this.Model.deleteMany(mongoQuery)
                 .exec((err) => {
                     if (err) reject(err);
                     resolve(true);

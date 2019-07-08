@@ -1,7 +1,7 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const { secret } = require('../../config');
-const users = require('../../dataAccess/users');
+const { secret } = require('../config');
+const usersRepository = require('../dataAccess/usersRepository');
 
 class Authenticate {
     constructor() {
@@ -16,7 +16,7 @@ class Authenticate {
     }
 
     async login({ login, password }) {
-        const user = await users.findByName(login);
+        const user = await usersRepository.findByName(login);
         if (!user) {
             throw new Error(`login "${login}" is incorrect`);
         }

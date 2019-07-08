@@ -23,11 +23,16 @@ class QueryConverter {
                     case 'exists':
                         mongoParametr.$exists = parametr[parametrKey];
                         break;
+                    case 'addFields':
+                        mongoParametr.$addFields = parametr[parametrKey];
+                        break;
+                    case 'match':
+                        mongoParametr.$match = parametr[parametrKey];
+                        break;
                     case '!':
                         if (parametr[parametrKey] instanceof Array) {
                             mongoParametr.$not = { $in: parametr[parametrKey] };
-                        }
-                        else {
+                        } else {
                             mongoParametr.$not = { $eq: parametr[parametrKey] };
                         }
 
@@ -41,7 +46,7 @@ class QueryConverter {
     }
 
     toMongoQuery(query) {
-        const mongoQuery = {};
+        const mongoQuery = query instanceof Array ? [] : {};
 
         Object.keys(query)
             .forEach((key) => {

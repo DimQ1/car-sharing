@@ -74,6 +74,7 @@ const carSchema = new Schema({
     registrationNumber: Number,
     productionInfo: ProductionInfoSchema,
     status: String,
+    tankLevel: Number,
     fuelLevel: Number,
     mileage: Number,
     curentRun: CurrentRunSchema,

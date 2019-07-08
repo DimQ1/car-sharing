@@ -1,4 +1,4 @@
-const users = require('../../dataAccess/users');
+const users = require('../dataAccess/usersRepository');
 
 class UserService {
     constructor() {

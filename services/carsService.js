@@ -1,4 +1,4 @@
-const cars = require('../../dataAccess/cars');
+const carsRepository = require('../dataAccess/carsRepository');
 
 class CarService {
     _allCarsModelToObject(carsModel) {
@@ -6,45 +6,44 @@ class CarService {
     }
 
     async create(car) {
-        const newCar = (await cars.create(car))
+        const newCar = (await carsRepository.create(car))
             .toObject({ virtuals: true });
 
         return newCar;
     }
 
     async updateById(id, car) {
-        const updateResult = (await cars.updateById(id, car))
+        const updateResult = (await carsRepository.updateById(id, car))
             .toObject({ virtuals: true });
 
         return updateResult;
     }
 
     async patch(query, car) {
-        const updateResult = (await cars.updateBy(query, car))
+        const updateResult = (await carsRepository.updateBy(query, car))
             .toObject({ virtuals: true });
 
         return updateResult;
     }
 
     async getAll(query) {
-        const allCarsObject = this._allCarsModelToObject(await cars.getAll(query));
+        const allCarsObject = this._allCarsModelToObject(await carsRepository.getAll(query));
 
         return allCarsObject;
     }
 
     async findFuelLevelLess(level) {
-        const query = { fuelLevel: { $lte: parseInt(level, 10) } };
-        const allCarsObject = this._allCarsModelToObject(await cars.getAll(query));
+        const allCarsObject = await carsRepository.findFuelLevelLess(level);
 
         return allCarsObject;
     }
 
     async findUnautarazedCard() {
         const query = {
-            'curentRun.driver.card': { $exists: false },
+            'curentRun.driver.card': { exists: false },
             'status.name': 'Reserved'
         };
-        const allCars = await cars.getAll(query);
+        const allCars = await carsRepository.getAll(query);
         const reservedCars = allCars
             .map(car => ({
                 VIN: car.VIN,
@@ -56,20 +55,20 @@ class CarService {
     }
 
     async findById(id) {
-        const car = (await cars.findById(id))
+        const car = (await carsRepository.findById(id))
             .toObject({ virtuals: true });
 
         return car;
     }
 
     async deleteById(id) {
-        const deleResult = await cars.deleteById(id);
+        const deleResult = await carsRepository.deleteById(id);
 
         return deleResult;
     }
 
     async deleteBy(query) {
-        const deleResult = await cars.deleteBy(query);
+        const deleResult = await carsRepository.deleteBy(query);
 
         return deleResult;
     }

@@ -1,8 +1,8 @@
-const { services } = require('../../services/authenticate');
+const authenticateService = require('../services/authenticateService');
 
 class LoginController {
     async login(req, res) {
-        const { user, token } = await services.login(req.body);
+        const { user, token } = await authenticateService.login(req.body);
         if (user) {
             res.header('Authorization', `Bearer ${token}`);
             res.json(user);
@@ -13,4 +13,4 @@ class LoginController {
     }
 }
 
-module.exports = new LoginController();
+module.exports.loginController = new LoginController();

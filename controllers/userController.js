@@ -1,4 +1,4 @@
-const { userService } = require('../../services/users');
+const { userService } = require('../services/usersService');
 
 class UserController {
     async getAll(req, res) {
@@ -16,4 +16,4 @@ class UserController {
     }
 }
 
-module.exports = new UserController();
+module.exports.userController = new UserController();

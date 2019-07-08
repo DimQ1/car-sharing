@@ -1,10 +1,6 @@
-const { carServices } = require('../../services/cars');
+const carServices = require('../services/carsService');
 
 class CarController {
-    constructor(fuellowLevel = 15) {
-        this.fuellowLevel = fuellowLevel;
-    }
-
     async create(req, res) {
         const car = req.body;
         res.status(201)
@@ -18,7 +14,8 @@ class CarController {
     }
 
     async findFuelLevelLess(req, res) {
-        res.json(await carServices.findFuelLevelLess(this.fuellowLevel));
+        const { level } = req.params;
+        res.json(await carServices.findFuelLevelLess(level));
     }
 
     async findUnautorazedCard(req, res) {
@@ -61,4 +58,4 @@ class CarController {
     }
 }
 
-module.exports = new CarController();
+module.exports.carController = new CarController();

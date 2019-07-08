@@ -1,8 +1,8 @@
 const { Router } = require('express');
 
 const router = Router();
-const { role } = require('../middlewares/authorize');
-const { authorize } = require('../middlewares/authorize');
+const role = require('../common/role');
+const authorize = require('../middlewares/authorize');
 const { userController } = require('../controllers');
 const errorCatcher = require('../common/errorCatcher');
 

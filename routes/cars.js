@@ -2,8 +2,8 @@ const { Router } = require('express');
 
 const router = Router();
 const expressJoiValidator = require('express-joi-validator');
-const { role } = require('../middlewares/authorize');
-const { authorize } = require('../middlewares/authorize');
+const role = require('../common/role');
+const authorize = require('../middlewares/authorize');
 const { carController } = require('../controllers/index');
 const { carValidators } = require('../controllers/index');
 const errorCatcher = require('../common/errorCatcher');
@@ -16,7 +16,7 @@ router.post('/',
 router.get('/',
     errorCatcher(carController.getAll));
 
-router.get('/fuellowLevel',
+router.get('/fuellowLevel/:level',
     errorCatcher((req, res) => carController.findFuelLevelLess(req, res)));
 
 router.get('/unauthorizedDriverCard',
