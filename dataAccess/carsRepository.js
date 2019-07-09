@@ -6,26 +6,25 @@ class CarRepository extends BaseRepository {
         super(Car);
     }
 
-    findFuelLevelLess(level) {
-        const agregateQuery = {
-            query:
-                [
-                    {
-                        addFields: {
-                            currentFuelLevel: {
-                                $divide: ['$fuelLevel', '$tankLevel']
-                            }
-                        }
-                    },
-                    {
-                        match: {
-                            currentFuelLevel: { $lt: +level }
-                        }
+    async findFuelLevelLess(level, limit, offset) {
+        const agregateQuery = [
+            {
+                addFields: {
+                    currentFuelLevel: {
+                        $divide: ['$fuelLevel', '$tankLevel']
                     }
-                ]
-        };
+                }
+            },
+            {
+                match: {
+                    currentFuelLevel: { $lt: +level }
+                }
+            }
+        ];
 
-        return this.findByAgregateQuery(agregateQuery);
+        const cars = await this.findByAgregateQuery(agregateQuery, limit, offset);
+
+        return cars;
     }
 }
 module.exports = new CarRepository();

@@ -15,11 +15,15 @@ class CarController {
 
     async findFuelLevelLess(req, res) {
         const { level } = req.params;
-        res.json(await carServices.findFuelLevelLess(level));
+        const { query } = req;
+
+        res.json(await carServices.findFuelLevelLess(level, query));
     }
 
     async findUnautorazedCard(req, res) {
-        res.json(await carServices.findUnautarazedCard());
+        const { query } = req;
+
+        res.json(await carServices.findUnautarazedCard(query));
     }
 
     async getById(req, res) {

@@ -29,37 +29,52 @@ class BaseRepository {
         return updateResult;
     }
 
-    async findByAgregateQuery(query) {
-        const { limit, offset, ...findQuery } = query;
-        const mongoQuery = this._convertQuery(findQuery.query);
+    async findByAgregateQuery(query, limit, offset) {
+        const mongoQuery = this._convertQuery(query);
 
-        const cursorData = await this.Model.aggregate(mongoQuery)
-            .limit(parseInt(limit || 100, 10))
-            .skip(parseInt(offset || 0, 10));
-
-        return cursorData;
-    }
-
-    async getAll(query) {
-        const { limit, offset, ...findQuery } = query;
-        const mongoQuery = this._convertQuery(findQuery);
-        const cursorData = await this.Model.find(mongoQuery)
+        const findResultPromise = this.Model.aggregate(mongoQuery)
             .limit(parseInt(limit, 10))
-            .skip(parseInt(offset, 10));
+            .skip(parseInt(offset, 10))
+            .sort({ _id: 1 });
 
-        return cursorData;
+        const countResultPromise = this.Model.aggregate(mongoQuery);
+
+        await Promise.all([findResultPromise, countResultPromise]);
+
+        const findResult = await findResultPromise;
+        const countResult = await countResultPromise;
+
+        return { findResult, countResult };
     }
 
-    async findById(id, limit) {
-        const findResult = await this.Model.findById(id)
-            .limit(parseInt(limit, 10));
+    async getAll(query, limit, offset) {
+        const mongoQuery = this._convertQuery(query);
+        const findResultPromise = this.Model.find(mongoQuery)
+            .limit(parseInt(limit, 10))
+            .skip(parseInt(offset, 10))
+            .sort({ _id: 1 })
+            .exec();
+
+        const countResultPromise = this.Model.find(mongoQuery)
+            .count()
+            .exec();
+
+        await Promise.all([findResultPromise, countResultPromise]);
+
+        const findResult = await findResultPromise;
+        const countResult = await countResultPromise;
+
+        return { findResult, countResult };
+    }
+
+    async findById(id) {
+        const findResult = await this.Model.findById(id);
 
         return findResult;
     }
 
-    async findOne(name, limit) {
-        const findResult = await this.Model.findOne(name)
-            .limit(parseInt(limit, 10));
+    async findOne(name) {
+        const findResult = await this.Model.findOne(name);
 
         return findResult;
     }
