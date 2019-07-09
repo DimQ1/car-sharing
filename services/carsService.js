@@ -20,8 +20,8 @@ class CarService {
         return updateResult;
     }
 
-    async getAll({ limit, offset, ...findQuery }) {
-        const carsModel = await carsRepository.getAll(findQuery, limit || 10, offset || 0);
+    async getAll({ limit, skip, ...findQuery }) {
+        const carsModel = await carsRepository.getAll(findQuery, limit || 10, skip || 0);
 
         if (!carsModel || !carsModel.findResult) {
             return null;
@@ -30,7 +30,7 @@ class CarService {
         const allCarsObject = {
             items: carsModel.findResult.length,
             limit: limit || 10,
-            offset: offset || 0,
+            skip: skip || 0,
             count: carsModel.countResult,
             cars: carsModel.findResult.map(car => car.toObject({ virtuals: true }))
         };
@@ -38,13 +38,13 @@ class CarService {
         return allCarsObject;
     }
 
-    async findFuelLevelLess(level, { limit, offset }) {
-        const carsModel = await carsRepository.findFuelLevelLess(level, limit || 10, offset || 0);
+    async findFuelLevelLess(level, { limit, skip }) {
+        const carsModel = await carsRepository.findFuelLevelLess(level, limit || 10, skip || 0);
 
         const allCars = {
             items: carsModel.findResult.length,
             limit: limit || 10,
-            offset: offset || 0,
+            skip: skip || 0,
             count: carsModel.countResult,
             cars: carsModel.findResult
         };
@@ -52,12 +52,12 @@ class CarService {
         return allCars;
     }
 
-    async findUnautarazedCard({ limit, offset }) {
+    async findUnautarazedCard({ limit, skip }) {
         const query = {
             'curentRun.driver.card': { exists: false },
             'status.name': 'Reserved'
         };
-        const allCars = await carsRepository.getAll(query, limit, offset);
+        const allCars = await carsRepository.getAll(query, limit, skip);
         const reservedCars = allCars
             .map(car => ({
                 VIN: car.VIN,

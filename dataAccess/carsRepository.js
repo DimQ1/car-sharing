@@ -6,7 +6,7 @@ class CarRepository extends BaseRepository {
         super(Car);
     }
 
-    async findFuelLevelLess(level, limit, offset) {
+    async findFuelLevelLess(level, limit, skip) {
         const agregateQuery = [
             {
                 addFields: {
@@ -22,7 +22,7 @@ class CarRepository extends BaseRepository {
             }
         ];
 
-        const cars = await this.findByAgregateQuery(agregateQuery, limit, offset);
+        const cars = await this.findByAgregateQuery(agregateQuery, limit, skip);
 
         return cars;
     }
