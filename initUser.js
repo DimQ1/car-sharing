@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const usersService = require('./dataAccess/users');
+const usersService = require('./dataAccess/usersRepository');
 
 const mongoDB = 'mongodb://localhost/car-sharing';
 mongoose.connect(mongoDB, { useNewUrlParser: true, useCreateIndex: true });
